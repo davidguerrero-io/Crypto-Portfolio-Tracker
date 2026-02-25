@@ -2,9 +2,26 @@
 from dotenv import load_dotenv
 import requests
 import os
+import time
 
 ROOT_API_URL = "https://api.coingecko.com/api/v3"
 
+# stores coin prices. Prices are fetched from here if data is valid. Data is only valid for up to 30 seconds. Data is updated if invalid (api request)
+_cache = {
+
+}
+
+# Amount of time cache data is considered valid before being discarded and updated (in seconds)
+CACHE_TTL = 30 # 30 seconds
+
+def get_current_time():
+    return time.time()
+
+def is_valid_cache_data(coin_id: str):
+    price, last_fetched_time_seconds = _cache[coin_id]
+    if get_current_time() - last_fetched_time_seconds < CACH_TTL:
+        return False
+    return True
 
 def get_api_key(): 
     # loading environment variables
@@ -16,9 +33,8 @@ def get_api_key():
     
     return api_key
 
-
-# Requires a crypto ID (slug) - Example -> "bitcoin", "ethereum". Returns the current price of the crypto asset.
-def get_current_price(coin_id: str, currency_type: str) -> float:
+# Requires a crypto ID (slug) - Example -> "bitcoin", "ethereum". Returns the current price of the crypto asset via API fetch.
+def _fetch_price_from_api(coin_id: str, currency_type: str) -> float:
     price_url = f"{ROOT_API_URL}/simple/price"
     api_key = get_api_key()
 
@@ -42,6 +58,8 @@ def get_current_price(coin_id: str, currency_type: str) -> float:
     data = response.json()
     coin_data = data.get(coin_id)
 
+    print(data)
+
     if not coin_data:
         raise ValueError(f"Invalid Coin ID: {coin_id}")
 
@@ -50,3 +68,21 @@ def get_current_price(coin_id: str, currency_type: str) -> float:
         raise ValueError(f"Invalid Currency Type: {currency_type} for {coin_id}")
 
     return coin_price
+
+# Performs a API fetch if stored crypto price is longer than 30 seconds or first time fetching it. 
+def get_current_price(coin_id: str, currency_type: str) -> float:
+    # If crypto coin price was fetched in the last 30 seconds, return price from cache
+    if coin_id in _cache:
+        if is_valid_cache_data(coin_id):
+            price, last_fetched_time_seconds = _cache[coin_id]
+            return price
+
+    # Otherwise fetch from CoinGecko API
+    try:
+        price = _fetch_price_from_api(coin_id, currency_type)
+    except ValueError:
+        raise
+
+    # Update price in cache
+    _cache[coin_id] = {price: get_current_time()}
+    return price
