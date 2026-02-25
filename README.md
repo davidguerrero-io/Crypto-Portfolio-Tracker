@@ -16,23 +16,37 @@ A modular Python CLI tool that tracks and fetches live crypto market data, perfo
 - SQLite
 - rich (for CLI formatting)
 
+# Crypto Portfolio Tracker - TODO
 
-## Project Structure
+## MVP
+- [ ] Implement Asset class
+- [ ] Implement Portfolio class
+- [ ] Fetch live price from CoinGecko
+- [ ] Calculate total portfolio value
+- [ ] Calculate unrealized P&L
+- [ ] Save portfolio to JSON
+
+## Phase 2
+- [ ] Add price alerts
+- [ ] Add historical tracking
+- [ ] Add charts with matplotlib
+
+# Project Structure
 
 
-## Installation
+# Installation
 
 
-## Environment Variables
+# Environment Variables
 
 
-## Usage
+# Usage
 
 
-## Future Improvements
+# Future Improvements
 
 
-## Motivation
+# Motivation
 
 
 
