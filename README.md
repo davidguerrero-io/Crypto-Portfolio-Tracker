@@ -2,7 +2,8 @@
 A modular Python CLI tool that tracks and fetches live crypto market data, performs technical analysis, and generates automated insights.
 
 - Fetches real-time crypto price data via API
-- Tracks your crypto
+- Acts as a crypto portfolio, allowing users to buy/sell crypto
+- Tracks profits/losses
 - Stores historical data
 - Calculates moving averages and volatilty
 - Generates structures market reports
