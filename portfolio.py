@@ -56,4 +56,16 @@ class Portfolio:
             return
         
         self._assets[coin_id].buy(quantity, get_current_price(coin_id, self._currency_type))
-    
+
+    # Sell a crypto asset
+    def sell(self, coin_id: str, quantity: float):
+        if coin_id not in self._assets:
+            raise ValueError(f"Portfolio does not contain any {coin_id} to sell")
+
+        if quantity <= 0:
+            raise ValueError("Sell quantity must be positive")
+        
+        if quantity > self._assets[coin_id].quantity:
+            raise ValueError("Sell quantity cannot exceed asset holding")
+        
+        self._assets[coin_id].sell(quantity, get_current_price(coin_id, self._currency_type))
