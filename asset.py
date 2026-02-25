@@ -59,7 +59,11 @@ class Asset:
         self._quantity -= quantity
         return profit
 
-    
+    # Calculates and returns the total value of the crypto owned
+    def owned_value(self, currency_type: str) -> float:
+        if self._quantity <= 0:
+            return 0.0
+        return self._quantity * get_current_price(self._coin_id, currency_type)
 
 
     
