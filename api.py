@@ -18,10 +18,10 @@ def get_current_time():
     return time.time()
 
 def is_valid_cache_data(coin_id: str):
-    price, last_fetched_time_seconds = _cache[coin_id]
-    if get_current_time() - last_fetched_time_seconds < CACH_TTL:
+    if coin_id not in _cache:
         return False
-    return True
+    price, timestamp = next(iter(_cache[coin_id].items()))
+    return get_current_time() - timestamp < CACHE_TTL
 
 def get_api_key(): 
     # loading environment variables
@@ -67,21 +67,21 @@ def _fetch_price_from_api(coin_id: str, currency_type: str) -> float:
     if coin_price is None:
         raise ValueError(f"Invalid Currency Type: {currency_type} for {coin_id}")
 
+    _cache[coin_id] = {coin_price: get_current_time()}
+
     return coin_price
 
 # Performs a API fetch if stored crypto price is longer than 30 seconds or first time fetching it. 
 def get_current_price(coin_id: str, currency_type: str) -> float:
     # If crypto coin price was fetched in the last 30 seconds, return price from cache
     if coin_id in _cache:
-        if is_valid_cache_data(coin_id):
-            price, last_fetched_time_seconds = _cache[coin_id]
+       if is_valid_cache_data(coin_id):
+            price, last_fetched_time_seconds = next(iter(_cache[coin_id].items()))
             return price
 
     # Otherwise fetch from CoinGecko API
-    try:
-        price = _fetch_price_from_api(coin_id, currency_type)
-    except ValueError:
-        raise
+    
+    price = _fetch_price_from_api(coin_id, currency_type)
 
     # Update price in cache
     _cache[coin_id] = {price: get_current_time()}

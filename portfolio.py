@@ -1,5 +1,5 @@
 from asset import Asset
-from api import get_current_price
+from api import get_current_price, is_valid_cache_data
 
 class Portfolio:
     def __init__(self, portfolio_name: str, owner_name: str, currency_type: str):
@@ -49,16 +49,16 @@ class Portfolio:
     def buy(self, coin_id: str, quantity: float):
         if quantity <= 0:
             raise ValueError("Buy quantity cannot be zero or a negative value")
+        
+        price = get_current_price(coin_id, self._currency_type)
 
         if coin_id not in self._assets:
-            new_asset = Asset(coin_id, quantity, get_current_price(coin_id, self._currency_type))
-            self._assets[coin_id] = new_asset
-            return
-        
-        self._assets[coin_id].buy(quantity, get_current_price(coin_id, self._currency_type))
+            self._assets[coin_id] = Asset(coin_id, quantity, price)
+        else:
+            self._assets[coin_id].buy(quantity, price)
 
     # Sell a crypto asset
-    def sell(self, coin_id: str, quantity: float):
+    def sell(self, coin_id: str, quantity: float) -> float:
         if coin_id not in self._assets:
             raise ValueError(f"Portfolio does not contain any {coin_id} to sell")
 
@@ -68,4 +68,15 @@ class Portfolio:
         if quantity > self._assets[coin_id].quantity:
             raise ValueError("Sell quantity cannot exceed asset holding")
         
-        self._assets[coin_id].sell(quantity, get_current_price(coin_id, self._currency_type))
+        return self._assets[coin_id].sell(quantity, get_current_price(coin_id, self._currency_type))
+
+    # Displays all crypto assets currently owned/used to own
+    def display_assets(self):
+        if not self._assets:
+            print("There are no assets in portfolio")
+        for coin_id, asset in self._assets.items():
+            print(f"Asset - {coin_id}")
+            print(f"Quantity owned - {asset.quantity}")
+            print(f"Purchase price - {asset.purchase_price}")
+            print(f"Unrealized profit - {asset.unrealized_profit(get_current_price(asset.coin_id, self._currency_type))}")
+            print("\n\n")
