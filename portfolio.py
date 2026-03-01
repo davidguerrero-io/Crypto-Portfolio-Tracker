@@ -74,9 +74,11 @@ class Portfolio:
     def display_assets(self):
         if not self._assets:
             print("There are no assets in portfolio")
-        for coin_id, asset in self._assets.items():
-            print(f"Asset - {coin_id}")
-            print(f"Quantity owned - {asset.quantity}")
-            print(f"Purchase price - {asset.purchase_price}")
-            print(f"Unrealized profit - {asset.unrealized_profit(get_current_price(asset.coin_id, self._currency_type))}")
-            print("\n\n")
+        for asset in self._assets.values():
+           asset.display_info(self._currency_type)
+    # Returns total portfolio value
+    def total_value(self):
+        total = 0
+        for asset in self._assets.values():
+            total += asset.owned_value(self._currency_type)
+        return total

@@ -9,6 +9,8 @@ class Asset:
         self._quantity = quantity
         self._purchase_price = purchase_price
 
+    
+
     @property
     def quantity(self):
         if self._quantity < 0:
@@ -66,3 +68,18 @@ class Asset:
             return 0.0
         return self._quantity * get_current_price(self._coin_id, currency_type)
     
+
+    # Displays the asset's information
+    def display_info(self, currency_type: str):
+        print(f"Asset name: {self._coin_id}")
+        print(f"Quantity owned: {self._quantity}")
+        print(f"Purchase Price: {self._purchase_price} {currency_type.upper()}")
+        print(f"Unrealized Profit: {self.unrealized_profit(get_current_price(self._coin_id, currency_type))} {currency_type.upper()}")
+
+    # Returns a dictionary representation of the asset for serialization (e.g., JSON storage).
+    def to_dict(self) -> dict:
+        return {
+            "coin_id": self._coin_id,
+            "quantity": self._quantity,
+            "purchase_price": self._purchase_price
+        }

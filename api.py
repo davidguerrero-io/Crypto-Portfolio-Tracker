@@ -55,10 +55,9 @@ def _fetch_price_from_api(coin_id: str, currency_type: str) -> float:
     except requests.exceptions.HTTPError:
         raise RuntimeError(f"Failed to fetch {coin_id} price from CoinGecko.")
 
+    # data -> {coin_id: {currency_type, price}}
     data = response.json()
     coin_data = data.get(coin_id)
-
-    print(data)
 
     if not coin_data:
         raise ValueError(f"Invalid Coin ID: {coin_id}")

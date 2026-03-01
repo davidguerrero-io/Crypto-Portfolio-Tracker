@@ -14,7 +14,6 @@ def display_menu():
 def main():
     print("Hello from crypto-tracker!")
 
-
     portfolio_name = input("Create a name for your crypto portfolio: ")
     owner_name = input("What is your full name?: ")
     currency_type = input("What currency type do you use? (Ex. USD, CAD, AUD, etc.): ")
@@ -66,8 +65,8 @@ def main():
             your_portfolio.display_assets()
 
         elif option == 4:
-            print("Place holder here")
-        
+            print(f"\nPortfolio Value: {your_portfolio.total_value()} {your_portfolio.currency_type.upper()}\n")
+
         elif option == 5:
             break
 
