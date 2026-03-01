@@ -5,6 +5,10 @@ from api import get_current_price
 
 class Asset:
     def __init__(self, coin_id: str, quantity: float, purchase_price: float):
+        if not coin_id.strip():
+            raise ValueError("coin_id must be a valid string")
+        if quantity <= 0:
+            raise ValueError("quantity must be a positive value")
         self._coin_id = coin_id
         self._quantity = quantity
         self._purchase_price = purchase_price

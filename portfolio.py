@@ -1,5 +1,6 @@
 from asset import Asset
 from api import get_current_price, is_valid_cache_data
+from transaction import Transaction
 
 class Portfolio:
     def __init__(self, portfolio_name: str, owner_name: str, currency_type: str):
@@ -15,6 +16,8 @@ class Portfolio:
         self._currency_type = currency_type
         # {"coin_id": Asset}
         self._assets = {}
+        # {transaction_id: Transaction}
+        self._transactions = {}
 
     # Property getters
 
@@ -82,3 +85,12 @@ class Portfolio:
         for asset in self._assets.values():
             total += asset.owned_value(self._currency_type)
         return total
+
+    # Returns a dictionary representation of the Portfolio for serialization (e.g., JSON storage).
+    def to_dict(self) -> dict:
+        return {
+            "portfolio_name": self._portfolio_name,
+            "owner": self._owner_name,
+            "currency_type": self._currency_type,
+            "assets": [asset.to_dict() for asset in self._assets.values()]
+        }
