@@ -1,0 +1,56 @@
+{
+    "portfolio_name": "moonbags",
+    "owner": "davidguerrero",
+    "currency_type": "USD",
+    "assets": [
+        {
+            "coin_id": "bitcoin",
+            "quantity": 2.497679,
+            "purchase_price": 67010
+        },
+        {
+            "coin_id": "kaspa",
+            "quantity": 1000000.0,
+            "purchase_price": 0.02979457
+        },
+        {
+            "coin_id": "sui",
+            "quantity": 100.0,
+            "purchase_price": 0.913915
+        }
+    ],
+    "transactions": {
+        "52601653150": {
+            "transaction_type": "BUY",
+            "coin_id": "bitcoin",
+            "quantity": 2.5,
+            "purchase_price": 67010,
+            "currency_type": "USD",
+            "timestamp": "2026-03-03T03:40:56.228851"
+        },
+        "34089815526": {
+            "transaction_type": "BUY",
+            "coin_id": "kaspa",
+            "quantity": 1000000.0,
+            "purchase_price": 0.02979457,
+            "currency_type": "USD",
+            "timestamp": "2026-03-03T03:41:02.562094"
+        },
+        "705305097511": {
+            "transaction_type": "SELL",
+            "coin_id": "bitcoin",
+            "quantity": 0.002321,
+            "purchase_price": 68290,
+            "currency_type": "USD",
+            "timestamp": "2026-03-03T19:18:40.947702"
+        },
+        "47902463411": {
+            "transaction_type": "BUY",
+            "coin_id": "sui",
+            "quantity": 100.0,
+            "purchase_price": 0.913915,
+            "currency_type": "USD",
+            "timestamp": "2026-03-03T23:58:14.116643"
+        }
+    }
+}

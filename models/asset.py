@@ -1,4 +1,5 @@
-from api import get_current_price
+from services.api import get_current_price
+from cli.console import console, format_profit
 # Later version implementations: 
 # - A transaction list that tracks all transaction types of the asset (buy/sell)
 # - Allow an Asset object to be printed like so -> print(Asset_object). Should display all information about the asset
@@ -78,7 +79,9 @@ class Asset:
         print(f"Asset name: {self._coin_id}")
         print(f"Quantity owned: {self._quantity}")
         print(f"Purchase Price: {self._purchase_price} {currency_type.upper()}")
-        print(f"Unrealized Profit: {self.unrealized_profit(get_current_price(self._coin_id, currency_type))} {currency_type.upper()}")
+        current_price = get_current_price(self._coin_id, currency_type)
+        profit = self.unrealized_profit(current_price)
+        console.print(f"Unrealized Profit: {format_profit(profit)} {currency_type.upper()}")
 
     # Returns a dictionary representation of the asset for serialization (e.g., JSON storage).
     def to_dict(self) -> dict:
