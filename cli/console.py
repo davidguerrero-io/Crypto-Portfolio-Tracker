@@ -3,7 +3,8 @@
 from rich import print
 from rich.console import Console
 from rich.table import Table
-from models.transaction import Transaction
+from rich.panel import Panel
+from models.transaction import Transaction, Portfolio
 from services.api import get_current_price
 
 console = Console()
@@ -116,6 +117,9 @@ def print_menu_table():
     )
 
     console.print(table)
+
+def print_portfolio_summary(portfolio: Portfolio):
+    pass
 
 
 # returns a formatted profit string in green (if in profit) or red (if in loss)
